@@ -52,7 +52,6 @@ namespace MoviesAPI.Controllers
             Console.WriteLine("Movie Duration ==> " + movie.Duration);
 
             return CreatedAtAction(nameof(GetMoviesById), new { id = movie.Id }, movie);
-
         }
 
         [HttpGet]
