@@ -65,7 +65,7 @@ namespace MoviesAPI.Controllers
             return _mapper.Map<List<ReadMovieDto>>(_context.Movies.Skip(skip).Take(50)
                 .Where(movie => movie.Sessions.Any(
                     session => session.Cinema.Name.Equals(cinemaName)
-                    )));
+                    )).ToList());
 
         }
 
