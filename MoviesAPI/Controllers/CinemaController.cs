@@ -32,10 +32,12 @@ namespace MoviesAPI.Controllers
         [HttpGet]
         public IEnumerable<ReadCinemaDto> GetCinema()
         {
-            return _mapper.Map<List<ReadCinemaDto>>(_movieContext.Cinemas.ToList());
+            var cinemaList = _mapper.Map<List<ReadCinemaDto>>(_movieContext.Cinemas.ToList());
+
+            return cinemaList;
         }
 
-        [HttpGet]
+        [HttpGet("{id}")]
         public IActionResult GetCinemaById(int id)
         {
             Cinema cinema = _movieContext.Cinemas.FirstOrDefault(cinema => cinema.Id == id);
