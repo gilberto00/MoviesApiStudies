@@ -12,9 +12,6 @@ namespace MoviesAPI.Controllers
     [Route("[controller]")]
     public class MoviesController : ControllerBase
     {
-
-
-
         //private static List<Movie> movies = new List<Movie>();
         //private static int id = 0;
 
@@ -55,11 +52,21 @@ namespace MoviesAPI.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<ReadMovieDto> GetMovies([FromQuery] int skip = 0, [FromQuery] int take = 50)
+        public IEnumerable<ReadMovieDto> GetMovies([FromQuery] int skip = 0, [FromQuery] int take = 50, [FromQuery] string? cinemaName = null)
         {
             //return movies.Skip(skip).Take(take);
             //return _context.Movies.Skip(skip).Take(take);
-            return _mapper.Map<List<ReadMovieDto>>(_context.Movies.Skip(skip).Take(50));
+
+            if (cinemaName == null)
+            {
+                return _mapper.Map<List<ReadMovieDto>>(_context.Movies.Skip(skip).Take(50).ToList());
+            }
+
+            return _mapper.Map<List<ReadMovieDto>>(_context.Movies.Skip(skip).Take(50)
+                .Where(movie => movie.Sessions.Any(
+                    session => session.Cinema.Name.Equals(cinemaName)
+                    )));
+
         }
 
         [HttpGet("{id}")]

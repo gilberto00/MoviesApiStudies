@@ -11,5 +11,7 @@ namespace MoviesAPI.Data.Dtos
         public int Duration { get; set; }
 
         public DateTime QueryDateTime { get; set; } = DateTime.Now;
+
+        public ICollection<ReadSessionDto> Sessions { get; set; }
     }
 }

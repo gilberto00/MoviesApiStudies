@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using MoviesAPI.Data;
 using MoviesAPI.Data.Dtos;
 using MoviesAPI.Models;
@@ -29,9 +30,23 @@ namespace MoviesAPI.Controllers
             return CreatedAtAction(nameof(GetCinemaById), new { Id = cinema.Id }, cinemaDto);
         }
 
+        //[HttpGet]
+        //public IEnumerable<ReadCinemaDto> GetCinema()
+        //{
+        //    var cinemaList = _mapper.Map<List<ReadCinemaDto>>(_movieContext.Cinemas.ToList());
+
+        //    return cinemaList;
+        //}
         [HttpGet]
-        public IEnumerable<ReadCinemaDto> GetCinema()
+        public IEnumerable<ReadCinemaDto> GetCinema([FromQuery] int? addressId = null)
         {
+            if (addressId == null)
+            {
+                return _mapper.Map<List<ReadCinemaDto>>(_movieContext.Cinemas.ToList());
+            }
+
+            return _mapper.Map<List<ReadCinemaDto>>(_movieContext.Cinemas.FromSqlRaw($"SELECT Id, Name, AddressId FROM Cinemas WHERE Cinemas.AddressId = {addressId}").ToList());
+
             var cinemaList = _mapper.Map<List<ReadCinemaDto>>(_movieContext.Cinemas.ToList());
 
             return cinemaList;
